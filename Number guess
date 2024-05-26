@@ -1,0 +1,55 @@
+import random
+import time
+
+# Function to introduce the game and get the player's name
+def intro():
+    print("May I ask you for your name?")
+    name = input()  # asks for the name
+    print(f"{name}, we are going to play a game. I am thinking of a number between 1 and 200.")
+    time.sleep(0.5)
+    print("Go ahead. Guess!")
+    return name
+
+# Function to handle the guessing logic
+def pick(number, name):
+    guesses_taken = 0
+    while guesses_taken < 6:  # player gets up to 6 guesses
+        time.sleep(0.25)
+        enter = input("Guess: ")  # asks for the guess
+
+        try:  # check if a number was entered
+            guess = int(enter)  # stores the guess as an integer
+
+            if 1 <= guess <= 200:  # check if the guess is in range
+                guesses_taken += 1  # increment guess count
+
+                if guess < number:
+                    print("The guess of the number that you have entered is too low.")
+                elif guess > number:
+                    print("The guess of the number that you have entered is too high.")
+                else:
+                    break  # correct guess, break out of the loop
+
+                if guesses_taken < 6 and guess != number:
+                    time.sleep(0.5)
+                    print("Try Again!")
+            else:
+                print("Silly Goose! That number isn't in the range!")
+                time.sleep(0.25)
+                print("Please enter a number between 1 and 200.")
+        except ValueError:  # if a non-number was entered
+            print(f"I don't think that '{enter}' is a number. Sorry.")
+
+    if guess == number:
+        print(f'Good job, {name}! You guessed my number in {guesses_taken} guesses!')
+    else:
+        print(f'Nope. The number I was thinking of was {number}.')
+
+# Main loop to play the game
+play_again = "yes"
+while play_again.lower() in ["yes", "y"]:
+    number = random.randint(1, 200)  # pick the number between 1 and 200
+    name = intro()
+    pick(number, name)
+    print("Do you want to play again? (yes/no)")
+    play_again = input().lower()
